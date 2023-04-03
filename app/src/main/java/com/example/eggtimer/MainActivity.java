@@ -35,27 +35,26 @@ public class MainActivity extends AppCompatActivity {
     public void buttonClicked(View view){
 
         if (counterIsActive) {
-            resetTimer();;
+            resetTimer();
         }else {
             counterIsActive = true;
             timerSeekBar.setEnabled(false);//once the timer statrted we can move the seek bar
             button.setText("STOP!");
+            countDownTimer = new CountDownTimer(timerSeekBar.getProgress() * 1000 + 150, 1000) {
+
+                @Override
+                public void onTick(long l) {
+                    updateTimer((int) l / 1000);//it update the timer
+                }
+
+                @Override
+                public void onFinish() {
+                    MediaPlayer mediaPlayer = MediaPlayer.create(getApplicationContext(), R.raw.alarm);
+                    mediaPlayer.start();
+                    resetTimer();
+                }
+            }.start();
         }
-
-       countDownTimer = new CountDownTimer(timerSeekBar.getProgress() * 1000 + 150 , 1000){
-
-           @Override
-           public void onTick(long l) {
-               updateTimer((int) l/1000);//it update the timer
-           }
-
-           @Override
-           public void onFinish() {
-               MediaPlayer mediaPlayer = MediaPlayer.create(getApplicationContext(), R.raw.alarm);
-               mediaPlayer.start();
-               resetTimer();
-           }
-       }.start();
 
     }
 
